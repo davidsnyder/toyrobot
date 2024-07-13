@@ -1,6 +1,6 @@
 # ToyRobot
 
-**TODO: Add description**
+Code for https://leanpub.com/elixir-toyrobot
 
 ## Installation
 
