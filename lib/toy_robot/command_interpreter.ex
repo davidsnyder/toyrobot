@@ -1,4 +1,5 @@
 defmodule ToyRobot.CommandInterpreter do
+
   @doc """
   Interprets commands from a commands list in preparation for running them.
 
@@ -21,13 +22,16 @@ defmodule ToyRobot.CommandInterpreter do
     commands |> Enum.map(&do_interpret/1)
   end
 
-  defp do_interpret("PLACE " <> rest) do
-    [east, north, facing] = String.split(rest, ",")
-    {:place, %{
-      north: String.to_integer(north),
-    east: String.to_integer(east),
-    facing: facing |> String.downcase |> String.to_atom}
-  }
+  defp do_interpret(("PLACE " <> _rest) = command) do
+    place_format = ~r/\APLACE (\d+),(\d+),(NORTH|EAST|SOUTH|WEST)\z/
+   case Regex.run(place_format, command) do
+      [_command, east, north, facing] ->
+        {:place, %{
+          north: String.to_integer(north),
+        east: String.to_integer(east),
+        facing: facing |> String.downcase |> String.to_atom}}
+        nil -> {:invalid, command}
+    end
   end
 
   defp do_interpret("MOVE" <> _), do: :move
