@@ -59,7 +59,7 @@ defmodule ToyRobot.Simulation do
   iex> table = %Table{north_boundary: 4, east_boundary: 4}
   %Table{north_boundary: 4, east_boundary: 4}
   iex> simulation = %Simulation{table: table, robot: %Robot{north: 0, east: 0, facing: :north}}
-  iex> Simulation.move(simulation)
+  iex> Simulation.move(simulation, 1)
   {:ok, %Simulation{
     table: table,
     robot: %Robot{north: 1, east: 0, facing: :north}
@@ -73,14 +73,14 @@ defmodule ToyRobot.Simulation do
   iex> table = %Table{north_boundary: 4, east_boundary: 4}
   %Table{north_boundary: 4, east_boundary: 4}
   iex> simulation = %Simulation{table: table, robot: %Robot{north: 4, east: 0, facing: :north}}
-  iex> Simulation.move(simulation)
+  iex> Simulation.move(simulation, 1)
   {:error, :at_table_boundary}
   """
-  def move(%Simulation{table: table, robot: robot} = simulation) do
-    with moved_robot <- robot |> Robot.move,
+  def move(%Simulation{table: table, robot: robot} = simulation, steps) do
+    with moved_robot <- robot |> Robot.move(steps),
     true <- Table.valid_position?(table, moved_robot)
     do
-    {:ok, %{simulation | robot: robot |> Robot.move}}
+    {:ok, %{simulation | robot: Robot.move(robot, steps)}}
     else
       false -> {:error, :at_table_boundary}
     end

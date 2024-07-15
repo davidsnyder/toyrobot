@@ -4,7 +4,7 @@ defmodule ToyRobot.Robot do
   defstruct [north: 0, east: 0, facing: :north]
 
     @doc """
-  Moves the robot forward one space in the direction it is facing.
+  Moves the robot forward @steps steps in the direction it is facing.
 
   ## Examples
 
@@ -12,24 +12,31 @@ defmodule ToyRobot.Robot do
       ToyRobot.Robot
       iex> robot = %Robot{north: 0, facing: :north}
       %Robot{north: 0, facing: :north}
-      iex> robot |> Robot.move
+      iex> Robot.move(robot, 1)
       %Robot{north: 1}
 
+      iex> alias ToyRobot.Robot
+      ToyRobot.Robot
+      iex> robot = %Robot{north: 0, facing: :north}
+      %Robot{north: 0, facing: :north}
+      iex> Robot.move(robot, 2)
+      %Robot{north: 2}
+
   """
-  def move(%Robot{facing: :north} = robot) do
-    robot |> move_north
+  def move(%Robot{facing: :north} = robot, steps) do
+    move_north(robot, steps)
   end
 
-  def move(%Robot{facing: :east} = robot) do
-    robot |> move_east
+  def move(%Robot{facing: :east} = robot, steps) do
+    move_east(robot, steps)
   end
 
-  def move(%Robot{facing: :south} = robot) do
-    robot |> move_south
+  def move(%Robot{facing: :south} = robot, steps) do
+    move_south(robot, steps)
   end
 
-  def move(%Robot{facing: :west} = robot) do
-    robot |> move_west
+  def move(%Robot{facing: :west} = robot, steps) do
+    move_west(robot, steps)
   end
 
       @doc """
@@ -76,19 +83,19 @@ defmodule ToyRobot.Robot do
     end
   end
 
-  defp move_east(robot) do
-    %Robot{robot | east: robot.east + 1}
+  defp move_east(robot, steps) do
+    %Robot{robot | east: robot.east + steps}
   end
 
-  defp move_west(robot) do
-    %Robot{robot | east: robot.east - 1}
+  defp move_west(robot, steps) do
+    %Robot{robot | east: robot.east - steps}
   end
 
-  defp move_north(robot) do
-    %Robot{robot | north: robot.north + 1}
+  defp move_north(robot, steps) do
+    %Robot{robot | north: robot.north + steps}
   end
 
-  defp move_south(robot) do
-    %Robot{robot | north: robot.north - 1}
+  defp move_south(robot, steps) do
+    %Robot{robot | north: robot.north - steps}
   end
 end

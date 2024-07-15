@@ -7,12 +7,13 @@ defmodule ToyRobot.CommandInterpreter do
 
   iex> alias ToyRobot.CommandInterpreter
   ToyRobot.CommandInterpreter
-  iex> commands = ["PLACE 1,2,NORTH", "MOVE", "LEFT", "RIGHT", "REPORT"]
-  ["PLACE 1,2,NORTH", "MOVE", "LEFT", "RIGHT", "REPORT"]
+  iex> commands = ["PLACE 1,2,NORTH", "MOVE", "MOVE 2", "LEFT", "RIGHT", "REPORT"]
+  ["PLACE 1,2,NORTH", "MOVE", "MOVE 2", "LEFT", "RIGHT", "REPORT"]
   iex> commands |> CommandInterpreter.interpret()
   [
     {:place, %{north: 2, east: 1, facing: :north}},
-    :move,
+    {:move, 1},
+    {:move, 2},
     :turn_left,
     :turn_right,
     :report
@@ -34,7 +35,16 @@ defmodule ToyRobot.CommandInterpreter do
     end
   end
 
-  defp do_interpret("MOVE" <> _), do: :move
+  defp do_interpret(("MOVE " <> _rest) = command) do
+    move_format = ~r/\AMOVE (\d+)\z/
+    case Regex.run(move_format, command) do
+      [_command, num_spaces] ->
+      {:move, String.to_integer(num_spaces)}
+      nil -> {:invalid, command}
+    end
+  end
+
+  defp do_interpret("MOVE" <> _), do: {:move, 1}
   defp do_interpret("LEFT" <> _), do: :turn_left
   defp do_interpret("RIGHT" <> _), do: :turn_right
   defp do_interpret("REPORT" <> _), do: :report

@@ -9,8 +9,13 @@ defmodule ToyRobot.RobotTest do
     end
 
     test "it moves one space north", %{robot: robot} do
-      robot = robot |> Robot.move
+      robot = Robot.move(robot, 1)
       assert robot.north == 1
+    end
+
+    test "it moves two spaces north", %{robot: robot} do
+      robot = Robot.move(robot, 2)
+      assert robot.north == 2
     end
 
     test "it turns left to face west", %{robot: robot} do
@@ -30,7 +35,7 @@ defmodule ToyRobot.RobotTest do
     end
 
     test "it moves one space east", %{robot: robot} do
-      robot = robot |> Robot.move
+      robot = Robot.move(robot, 1)
       assert robot.east == 1
     end
 
@@ -51,7 +56,7 @@ defmodule ToyRobot.RobotTest do
     end
 
     test "it moves one space south", %{robot: robot} do
-      robot = robot |> Robot.move
+      robot = Robot.move(robot, 1)
       assert robot.north == -1
     end
 
@@ -72,7 +77,7 @@ defmodule ToyRobot.RobotTest do
     end
 
     test "it moves one space west", %{robot: robot} do
-      robot = robot |> Robot.move
+      robot = Robot.move(robot, 1)
       assert robot.east == -1
     end
 
@@ -111,7 +116,7 @@ defmodule ToyRobot.RobotTest do
     end
 
     test "moves east one space", %{robot: robot} do
-      robot = robot |> Robot.move
+      robot = Robot.move(robot, 1)
       assert robot.north == 1
       assert robot.east == 1
       assert robot.facing == :east

@@ -26,3 +26,4 @@ toy_robot-*.tar
 /tmp/
 
 test.exs
+toy_robot
